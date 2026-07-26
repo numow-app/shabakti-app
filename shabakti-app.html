@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شبكتي — متجر كروت الإنترنت الأوتوماتيكي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D1321;
+    --card:#16203A;
+    --card-hi:#1E2C4D;
+    --teal:#22D3B8;
+    --pink:#F472B6;
+    --amber:#FBBF63;
+    --violet:#818CF8;
+    --text:#EEF2FF;
+    --muted:#8B96B8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:radial-gradient(circle at 50% -10%, #1a2a52 0%, #0D1321 50%);
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:24px 12px; font-family:'IBM Plex Sans Arabic', sans-serif; color:var(--text);
+  }
+  .phone{
+    width:390px; max-width:100%; background:var(--bg); border-radius:36px;
+    border:1px solid #ffffff14; box-shadow:0 40px 80px -20px #00000080, inset 0 0 0 1px #ffffff08;
+    overflow:hidden; position:relative;
+  }
+  .notch{ position:absolute; top:0; left:50%; transform:translateX(-50%); width:120px; height:22px; background:#000; border-radius:0 0 16px 16px; z-index:5; }
+  .screen{ padding:44px 20px 30px; min-height:780px; position:relative; }
+
+  #onboarding{
+    position:absolute; inset:0; background:var(--bg); z-index:40;
+    padding:60px 24px 30px; display:flex; flex-direction:column;
+  }
+  .ob-badge{
+    width:64px; height:64px; border-radius:20px; margin:0 auto 20px;
+    background:linear-gradient(135deg,var(--teal),var(--violet));
+    display:flex; align-items:center; justify-content:center; font-size:28px;
+  }
+  .ob-title{ font-family:'Almarai'; font-weight:800; font-size:21px; text-align:center; margin-bottom:8px; }
+  .ob-sub{ color:var(--muted); font-size:12.5px; text-align:center; margin-bottom:28px; line-height:1.7; }
+
+  .ob-field{ margin-bottom:16px; }
+  .ob-field label{ display:block; font-size:12px; color:var(--muted); margin-bottom:7px; font-weight:500; }
+  .ob-field input{
+    width:100%; background:var(--card); border:1.5px solid #ffffff14; border-radius:14px;
+    padding:14px 16px; color:var(--text); font-size:14px; font-family:'IBM Plex Sans Arabic'; outline:none;
+  }
+  .ob-field input:focus{ border-color:var(--teal); }
+  .ob-field input::placeholder{ color:#5c6789; }
+  .ob-hint{ color:var(--muted); font-size:10.5px; margin-top:6px; line-height:1.6; }
+
+  .ob-btn{
+    width:100%; margin-top:10px; background:linear-gradient(135deg,var(--teal),var(--violet));
+    border:none; border-radius:16px; padding:16px; color:#04121a; font-family:'Almarai'; font-weight:800;
+    font-size:14.5px; cursor:pointer;
+  }
+  .ob-skip{ text-align:center; margin-top:14px; color:var(--muted); font-size:11.5px; cursor:pointer; text-decoration:underline; }
+  .ob-error{ color:var(--pink); font-size:11px; margin-top:6px; display:none; }
+
+  .top-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+  .net-chip{ display:flex; align-items:center; gap:10px; }
+  .net-icon{ width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,var(--teal),var(--violet)); display:flex; align-items:center; justify-content:center; font-size:17px; }
+  .net-name{ font-family:'Almarai'; font-weight:800; font-size:15px; }
+  .net-ip{ color:var(--muted); font-size:10px; font-family:'Roboto Mono'; }
+  .settings-btn{ width:36px; height:36px; border-radius:10px; background:var(--card); display:flex; align-items:center; justify-content:center; font-size:15px; cursor:pointer; }
+
+  .hero{
+    background:linear-gradient(160deg, var(--card-hi), var(--card)); border:1px solid #ffffff10;
+    border-radius:22px; padding:20px; margin-bottom:20px; position:relative; overflow:hidden;
+  }
+  .hero::after{ content:""; position:absolute; inset:0; background:radial-gradient(150px 90px at 90% 0%, #22D3B822, transparent 70%); }
+  .hero-label{ color:var(--muted); font-size:11.5px; margin-bottom:8px; }
+  .hero-amount{ display:flex; align-items:baseline; gap:6px; margin-bottom:14px; }
+  .hero-amount b{ font-family:'Roboto Mono'; font-size:32px; font-weight:500; color:var(--teal); }
+  .hero-amount span{ color:var(--muted); font-size:13px; }
+  .hero-stats{ display:flex; gap:10px; }
+  .hero-stat{ flex:1; background:#00000024; border-radius:12px; padding:10px 12px; text-align:center; }
+  .hero-stat b{ display:block; font-family:'Roboto Mono'; font-size:16px; }
+  .hero-stat span{ color:var(--muted); font-size:10px; }
+
+  .section-title{ font-family:'Almarai'; font-weight:700; font-size:14px; margin:6px 0 12px; color:var(--muted); }
+
+  .cat-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:20px; }
+  .cat-card{
+    background:var(--card); border:2px solid transparent; border-radius:16px; padding:16px;
+    cursor:pointer; transition:border-color .15s ease;
+  }
+  .cat-card.sel{ border-color:var(--teal); background:var(--card-hi); }
+  .cat-card .cat-icon{ font-size:20px; margin-bottom:8px; }
+  .cat-card .cat-dur{ font-family:'Almarai'; font-weight:700; font-size:13px; margin-bottom:3px; }
+  .cat-card .cat-price{ font-family:'Roboto Mono'; color:var(--amber); font-size:15px; }
+  .gb-input{
+    width:100%; margin-top:8px; background:#0D1321; border:1px solid #ffffff1a; border-radius:8px;
+    padding:6px 8px; color:var(--teal); font-size:11px; font-family:'IBM Plex Sans Arabic'; outline:none; text-align:center;
+  }
+  .gb-input::placeholder{ color:#5c6789; }
+
+  .buy-btn{
+    width:100%; background:linear-gradient(135deg,var(--teal),var(--violet)); border:none; border-radius:16px;
+    padding:16px; color:#04121a; font-family:'Almarai'; font-weight:800; font-size:14.5px; cursor:pointer; margin-bottom:20px;
+  }
+
+  .result-box{
+    display:none; background:var(--card-hi); border:1.5px dashed var(--teal); border-radius:18px;
+    padding:20px; text-align:center; margin-bottom:20px;
+  }
+  .result-box.show{ display:block; }
+  .result-box .check{ font-size:30px; margin-bottom:8px; }
+  .result-box .code-label{ color:var(--muted); font-size:11px; margin-bottom:8px; }
+  .result-box .code{
+    font-family:'Roboto Mono'; font-size:19px; letter-spacing:2px; color:var(--teal);
+    background:#0D1321; border-radius:10px; padding:12px; margin-bottom:8px;
+  }
+  .result-box .qr{ font-size:11px; color:var(--muted); }
+
+  .history-item{ display:flex; align-items:center; gap:12px; background:var(--card); border-radius:14px; padding:12px 14px; margin-bottom:8px; }
+  .history-item .h-icon{ width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:14px; flex:none; }
+  .history-item .h-info{ flex:1; }
+  .history-item .h-name{ font-size:12.5px; font-weight:600; }
+  .history-item .h-time{ color:var(--muted); font-size:10px; }
+  .history-item .h-price{ font-family:'Roboto Mono'; font-size:13px; color:var(--teal); }
+
+  /* المساعد الذكي للزبائن */
+  .ai-float{
+    position:absolute; bottom:20px; left:20px; z-index:45;
+    width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--teal),var(--violet));
+    display:flex; align-items:center; justify-content:center; font-size:22px; cursor:pointer;
+    box-shadow:0 8px 20px -4px #22D3B880;
+  }
+  .ai-panel{
+    position:absolute; inset:0; background:var(--bg); z-index:50; display:none;
+    flex-direction:column; padding:0;
+  }
+  .ai-panel.show{ display:flex; }
+  .ai-header{
+    display:flex; align-items:center; gap:10px; padding:44px 20px 16px; border-bottom:1px solid #ffffff14;
+  }
+  .ai-header .ai-avatar{ width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--teal),var(--violet)); display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .ai-header .ai-title{ font-family:'Almarai'; font-weight:800; font-size:14.5px; }
+  .ai-header .ai-close{ margin-right:auto; cursor:pointer; font-size:20px; color:var(--muted); }
+  .ai-messages{ flex:1; overflow-y:auto; padding:16px 20px; display:flex; flex-direction:column; gap:12px; }
+  .ai-msg{ max-width:80%; padding:10px 14px; border-radius:14px; font-size:12.5px; line-height:1.7; }
+  .ai-msg.bot{ background:var(--card); align-self:flex-start; border-bottom-right-radius:4px; }
+  .ai-msg.user{ background:linear-gradient(135deg,var(--teal),var(--violet)); color:#04121a; align-self:flex-end; border-bottom-left-radius:4px; font-weight:600; }
+  .ai-quick{ display:flex; flex-wrap:wrap; gap:8px; padding:0 20px 12px; }
+  .ai-quick button{
+    background:var(--card); border:1px solid #ffffff1a; border-radius:100px; padding:8px 14px;
+    color:var(--text); font-size:11px; font-family:'IBM Plex Sans Arabic'; cursor:pointer;
+  }
+  .ai-input-row{ display:flex; gap:8px; padding:14px 20px 20px; border-top:1px solid #ffffff14; }
+  .ai-input-row input{
+    flex:1; background:var(--card); border:1px solid #ffffff1a; border-radius:100px; padding:11px 16px;
+    color:var(--text); font-size:12.5px; font-family:'IBM Plex Sans Arabic'; outline:none;
+  }
+  .ai-input-row button{
+    background:linear-gradient(135deg,var(--teal),var(--violet)); border:none; border-radius:100px;
+    padding:0 18px; color:#04121a; font-family:'Almarai'; font-weight:800; font-size:12px; cursor:pointer;
+  }
+
+  @media print{
+    body *{ visibility:hidden; }
+    #cardPreview, #cardPreview *{ visibility:visible; }
+    #cardPreview{
+      position:absolute; top:0; left:0; width:320px !important; margin:0 !important;
+      box-shadow:none !important; border:1px solid #ccc !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+
+    <div id="onboarding">
+      <div class="ob-badge">📡</div>
+      <div class="ob-title">إعداد شبكتك</div>
+      <div class="ob-sub">عبّي بيانات شبكتك مرة وحدة بس، وبعدها التطبيق يربط كل الكروت بشبكتك تلقائيًا</div>
+
+      <div class="ob-field">
+        <label>اسم الشبكة</label>
+        <input type="text" id="obNetName" placeholder="مثال: شبكة الوحدة">
+      </div>
+
+      <div class="ob-field">
+        <label>عنوان IP لجهاز التوجيه (Router)</label>
+        <input type="text" id="obNetIP" placeholder="مثال: 192.168.1.1" inputmode="decimal">
+        <div class="ob-hint">تلقاه عادة خلف جهاز الراوتر، أو تسأل الفني اللي ركبه</div>
+      </div>
+
+      <div class="ob-field">
+        <label>اسم صاحب المتجر</label>
+        <input type="text" id="obOwnerName" placeholder="اسمك">
+      </div>
+
+      <div class="ob-error" id="obError">عبّي كل الحقول عشان نكمل</div>
+      <button class="ob-btn" id="obSaveBtn">حفظ ومتابعة</button>
+      <div class="ob-skip" id="obSkipBtn">تخطي الإعداد الآن</div>
+    </div>
+
+    <!-- شاشة انتهاء التجربة المجانية / الاشتراك -->
+    <div id="trialPaywall" style="display:none; position:absolute; inset:0; background:var(--bg); z-index:60; padding:50px 22px 30px; flex-direction:column; overflow-y:auto;">
+      <div class="ob-badge" style="background:linear-gradient(135deg,#F87171,#FBBF63);">⏰</div>
+      <div class="ob-title">انتهت الفترة التجريبية</div>
+      <div class="ob-sub">جربت التطبيق 10 أيام مجانًا، وحان وقت الاشتراك عشان تكمل استخدام كل المميزات</div>
+
+      <div style="background:var(--card); border:1.5px solid var(--teal); border-radius:16px; padding:18px; margin-bottom:18px; text-align:center;">
+        <div style="color:var(--muted); font-size:11.5px; margin-bottom:6px;">اشتراك سنوي كامل</div>
+        <div style="font-family:'Roboto Mono'; font-size:32px; font-weight:700; color:var(--teal);">5000<span style="font-size:13px; color:var(--muted);"> ريال</span></div>
+      </div>
+
+      <div style="background:var(--card-hi); border-radius:14px; padding:16px; margin-bottom:16px; text-align:center;">
+        <div style="color:var(--muted); font-size:11px; margin-bottom:6px;">حوّل المبلغ على رقم جيب التالي</div>
+        <div style="font-family:'Roboto Mono'; font-size:22px; color:var(--amber); font-weight:600;">777200922</div>
+      </div>
+
+      <div class="ob-field">
+        <label>الاسم</label>
+        <input type="text" id="trialName" placeholder="اكتب اسمك">
+      </div>
+      <div class="ob-field">
+        <label>رقم الجوال</label>
+        <input type="tel" id="trialPhone" placeholder="05xxxxxxxx">
+      </div>
+      <div class="ob-field">
+        <label>رقم عملية التحويل (من تطبيق جيب)</label>
+        <input type="text" id="trialRef" placeholder="مثال: JB-2938471">
+      </div>
+
+      <button class="ob-btn" id="trialConfirmBtn">تأكيد إرسال التحويل</button>
+      <a href="https://wa.me/966780030066?text=مرحبًا، حولت اشتراك تطبيق شبكتي وهذا إثبات التحويل" target="_blank" style="text-decoration:none;">
+        <button class="ob-btn" style="background:linear-gradient(135deg,#25D366,#1DA851); margin-top:10px;">💬 تواصل عبر واتساب وخذ الكود</button>
+      </a>
+
+      <div class="ob-field" id="trialCodeField" style="display:none; margin-top:14px;">
+        <label>كود التفعيل (وصلك عبر واتساب)</label>
+        <input type="text" id="trialCode" placeholder="اكتب الكود هنا">
+      </div>
+      <button class="ob-btn" id="trialActivateBtn" style="display:none; background:linear-gradient(135deg,#4ADE80,#22C55E);">تفعيل الاشتراك</button>
+      <div class="ob-error" id="trialMsg" style="color:var(--green); display:none;"></div>
+    </div>
+
+    <div class="top-row">
+      <div class="net-chip">
+        <div class="net-icon">📡</div>
+        <div>
+          <div class="net-name" id="displayNetName">شبكتي</div>
+          <div class="net-ip" id="displayNetIP">لم يُعبّى بعد</div>
+        </div>
+      </div>
+      <div class="settings-btn" id="editSettingsBtn">⚙️</div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-label">أرباح اليوم</div>
+      <div class="hero-amount"><b id="todayEarnings">0</b><span>ريال</span></div>
+      <div class="hero-stats">
+        <div class="hero-stat"><b id="todayCount">0</b><span>عملية بيع</span></div>
+        <div class="hero-stat"><b>98%</b><span>معدل نجاح</span></div>
+        <div class="hero-stat"><b>فوري</b><span>سرعة التسليم</span></div>
+      </div>
+    </div>
+
+    <div class="hero" style="background:linear-gradient(160deg,#1E2C4D,#16203A);">
+      <div class="hero-label">رصيد المحفظة</div>
+      <div class="hero-amount"><b id="walletBalance">0</b><span>ريال</span></div>
+      <div style="color:var(--muted); font-size:10.5px;">إجمالي كل عمليات البيع منذ بداية التشغيل</div>
+    </div>
+
+    <div class="section-title">إدارة سريعة</div>
+    <div class="cat-grid" style="margin-bottom:20px;">
+      <div class="cat-card mgmt-card" id="mgmt_cards">
+        <div class="cat-icon">🗂️</div>
+        <div class="cat-dur">إدارة الكروت</div>
+      </div>
+      <div class="cat-card mgmt-card" id="mgmt_add">
+        <div class="cat-icon">➕</div>
+        <div class="cat-dur">إضافة كروت</div>
+      </div>
+      <div class="cat-card mgmt-card" id="mgmt_payments">
+        <div class="cat-icon">📈</div>
+        <div class="cat-dur">تقارير الدفعات</div>
+      </div>
+      <div class="cat-card mgmt-card" id="mgmt_packages">
+        <div class="cat-icon">📶</div>
+        <div class="cat-dur">إدارة الباقات</div>
+      </div>
+      <div class="cat-card mgmt-card" id="mgmt_maintenance">
+        <div class="cat-icon">🛠️</div>
+        <div class="cat-dur">صيانة الكروت المنتهية</div>
+      </div>
+      <div class="cat-card mgmt-card" id="mgmt_devices">
+        <div class="cat-icon">📡</div>
+        <div class="cat-dur">تقارير الأجهزة</div>
+      </div>
+      <div class="cat-card mgmt-card" id="mgmt_backup">
+        <div class="cat-icon">💾</div>
+        <div class="cat-dur">النسخ الاحتياطية</div>
+      </div>
+      <div class="cat-card mgmt-card" id="mgmt_design">
+        <div class="cat-icon">🎨</div>
+        <div class="cat-dur">تصميم الكروت</div>
+      </div>
+      <div class="cat-card mgmt-card" id="mgmt_shops">
+        <div class="cat-icon">🏪</div>
+        <div class="cat-dur">حسابات البقالات</div>
+      </div>
+      <div class="cat-card mgmt-card" id="settingsCard">
+        <div class="cat-icon">⚙️</div>
+        <div class="cat-dur">الإعدادات</div>
+      </div>
+    </div>
+
+    <div class="section-title">دعم أنظمة الراوتر</div>
+    <div style="display:flex; gap:10px; margin-bottom:20px;">
+      <a href="openwrt-setup.html" style="flex:1; text-decoration:none;">
+        <div style="background:var(--card); border-radius:14px; padding:14px; text-align:center; cursor:pointer;">
+          <div style="font-size:20px; margin-bottom:6px;">🔷</div>
+          <div style="font-size:11.5px; font-weight:600; color:var(--text);">MikroTik</div>
+        </div>
+      </a>
+      <a href="openwrt-setup.html" style="flex:1; text-decoration:none;">
+        <div style="background:var(--card); border-radius:14px; padding:14px; text-align:center; cursor:pointer;">
+          <div style="font-size:20px; margin-bottom:6px;">🟢</div>
+          <div style="font-size:11.5px; font-weight:600; color:var(--text);">OpenWrt</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="section-title">اختر مدة الكرت</div>
+    <div class="cat-grid">
+      <div class="cat-card sel" data-dur="100" data-price="100">
+        <div class="cat-icon">💳</div>
+        <div class="cat-dur">كرت 100</div>
+        <div class="cat-price">100 ريال</div>
+        <input type="text" class="gb-input" data-key="gb_100" placeholder="كم جيجا؟" onclick="event.stopPropagation()">
+      </div>
+      <div class="cat-card" data-dur="200" data-price="200">
+        <div class="cat-icon">💳</div>
+        <div class="cat-dur">كرت 200</div>
+        <div class="cat-price">200 ريال</div>
+        <input type="text" class="gb-input" data-key="gb_200" placeholder="كم جيجا؟" onclick="event.stopPropagation()">
+      </div>
+      <div class="cat-card" data-dur="300" data-price="300">
+        <div class="cat-icon">💳</div>
+        <div class="cat-dur">كرت 300</div>
+        <div class="cat-price">300 ريال</div>
+        <input type="text" class="gb-input" data-key="gb_300" placeholder="كم جيجا؟" onclick="event.stopPropagation()">
+      </div>
+      <div class="cat-card" data-dur="500" data-price="500">
+        <div class="cat-icon">💳</div>
+        <div class="cat-dur">كرت 500</div>
+        <div class="cat-price">500 ريال</div>
+        <input type="text" class="gb-input" data-key="gb_500" placeholder="كم جيجا؟" onclick="event.stopPropagation()">
+      </div>
+    </div>
+
+    <div class="ob-field" style="margin-bottom:14px;">
+      <label>فئة الكرت</label>
+      <select id="amountSelect" style="width:100%; background:var(--card); border:1.5px solid #ffffff14; border-radius:14px; padding:14px 16px; color:var(--text); font-size:14px; font-family:'IBM Plex Sans Arabic'; outline:none;">
+        <option value="100">100 ريال</option>
+        <option value="200">200 ريال</option>
+        <option value="300">300 ريال</option>
+        <option value="500">500 ريال</option>
+      </select>
+    </div>
+
+    <div class="ob-field" style="margin-bottom:14px;">
+      <label>كم جيجا (لهذي الفئة)</label>
+      <input type="text" id="gbField" placeholder="مثال: 5 جيجا">
+    </div>
+
+    <div class="ob-field" style="margin-bottom:14px;">
+      <label>اكتب كود الكرت (من عندك)</label>
+      <input type="text" id="manualCode" placeholder="مثال: WIFI-1234-5678">
+    </div>
+
+    <button class="buy-btn" id="generateBtn">🎫 تسجيل الكرت المباع</button>
+
+    <div class="result-box" id="resultBox">
+      <div class="check">✅</div>
+      <div class="code-label">كود الكرت جاهز — اعطيه للزبون</div>
+      <div class="code" id="resultCode">WIFI-0000-0000</div>
+      <div class="qr">صالح لمدة <span id="resultDur">ساعة</span> من أول استخدام</div>
+    </div>
+
+    <div class="section-title">آخر الكروت المباعة</div>
+    <div id="historyList">
+      <div class="history-item">
+        <div class="h-icon" style="background:linear-gradient(135deg,#22D3B8,#818CF8);">💳</div>
+        <div class="h-info"><div class="h-name">كرت 100 ريال</div><div class="h-time">قبل 12 دقيقة</div></div>
+        <div class="h-price">100 ريال</div>
+      </div>
+      <div class="history-item">
+        <div class="h-icon" style="background:linear-gradient(135deg,#FBBF63,#F472B6);">💳</div>
+        <div class="h-info"><div class="h-name">كرت 300 ريال</div><div class="h-time">قبل ساعة</div></div>
+        <div class="h-price">300 ريال</div>
+      </div>
+    </div>
+
+    <!-- زر المساعد الذكي العائم -->
+    <div class="ai-float" id="aiFloatBtn">🤖</div>
+
+    <!-- نافذة المساعد الذكي -->
+    <div class="ai-panel" id="aiPanel">
+      <div class="ai-header">
+        <div class="ai-avatar">🤖</div>
+        <div class="ai-title">مساعد الشبكة الذكي</div>
+        <div class="ai-close" id="aiCloseBtn">✕</div>
+      </div>
+      <div class="ai-messages" id="aiMessages">
+        <div class="ai-msg bot">هلا 👋 أنا مساعدك الذكي، اسألني عن الأسعار، الجيجا، أو طريقة الشحن وبجاوبك فورًا.</div>
+      </div>
+      <div class="ai-quick">
+        <button data-q="كم سعر الكروت؟">كم سعر الكروت؟</button>
+        <button data-q="كم جيجا في كل كرت؟">كم جيجا في كل كرت؟</button>
+        <button data-q="كيف أشحن الكرت؟">كيف أشحن الكرت؟</button>
+      </div>
+      <div class="ai-input-row">
+        <input type="text" id="aiInput" placeholder="اكتب سؤالك هنا...">
+        <button id="aiSendBtn">إرسال</button>
+      </div>
+      <a href="https://wa.me/966780030066?text=مرحبًا، عندي استفسار عن كروت الشبكة" target="_blank" style="text-decoration:none; margin:0 20px 20px; display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg,#25D366,#1DA851); color:#fff; padding:12px; border-radius:100px; font-family:'Almarai'; font-weight:700; font-size:12.5px;">
+        💬 تواصل مباشر عبر واتساب
+      </a>
+    </div>
+
+    <!-- نافذة عرض محتوى أزرار الإدارة -->
+    <div class="ai-panel" id="mgmtPanel">
+      <div class="ai-header">
+        <div class="ai-avatar" id="mgmtIcon">🗂️</div>
+        <div class="ai-title" id="mgmtTitle">إدارة الكروت</div>
+        <div class="ai-close" id="mgmtCloseBtn">✕</div>
+      </div>
+      <div class="ai-messages" id="mgmtBody" style="gap:10px;"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const onboarding = document.getElementById('onboarding');
+  const obNetName = document.getElementById('obNetName');
+  const obNetIP = document.getElementById('obNetIP');
+  const obOwnerName = document.getElementById('obOwnerName');
+  const obError = document.getElementById('obError');
+  const obSaveBtn = document.getElementById('obSaveBtn');
+  const obSkipBtn = document.getElementById('obSkipBtn');
+  const displayNetName = document.getElementById('displayNetName');
+  const displayNetIP = document.getElementById('displayNetIP');
+  const editSettingsBtn = document.getElementById('editSettingsBtn');
+
+  function closeOnboarding(){
+    onboarding.style.display = 'none';
+  }
+
+  function loadNetworkInfo(){
+    try{
+      const name = localStorage.getItem('shabaka_name');
+      const ip = localStorage.getItem('shabaka_ip');
+      if(name){ displayNetName.textContent = name; }
+      if(ip){ displayNetIP.textContent = 'IP: ' + ip; }
+      if(name || ip){ closeOnboarding(); }
+    }catch(e){ closeOnboarding(); }
+  }
+
+  obSaveBtn.addEventListener('click', ()=>{
+    const name = obNetName.value.trim();
+    const ip = obNetIP.value.trim();
+    const owner = obOwnerName.value.trim();
+    if(!name || !ip || !owner){
+      obError.style.display = 'block';
+      return;
+    }
+    obError.style.display = 'none';
+    try{
+      localStorage.setItem('shabaka_name', name);
+      localStorage.setItem('shabaka_ip', ip);
+      localStorage.setItem('shabaka_owner', owner);
+    }catch(e){}
+    displayNetName.textContent = name;
+    displayNetIP.textContent = 'IP: ' + ip;
+    closeOnboarding();
+  });
+
+  obSkipBtn.addEventListener('click', closeOnboarding);
+  editSettingsBtn.addEventListener('click', ()=>{ onboarding.style.display = 'flex'; });
+  document.getElementById('settingsCard').addEventListener('click', ()=>{ onboarding.style.display = 'flex'; });
+
+  loadNetworkInfo();
+
+  // ===== نظام التجربة المجانية (10 أيام) والاشتراك =====
+  const TRIAL_DAYS = 10;
+  const trialPaywall = document.getElementById('trialPaywall');
+  const trialConfirmBtn = document.getElementById('trialConfirmBtn');
+  const trialActivateBtn = document.getElementById('trialActivateBtn');
+  const trialCodeField = document.getElementById('trialCodeField');
+  const trialMsg = document.getElementById('trialMsg');
+
+  const SUBSCRIPTION_DAYS = 365;
+
+  function checkTrialStatus(){
+    try{
+      const isSubscribed = localStorage.getItem('shabaka_subscribed') === 'true';
+
+      if(isSubscribed){
+        const subDate = localStorage.getItem('shabaka_subscribed_date');
+        if(subDate){
+          const daysSinceSub = (new Date() - new Date(subDate)) / (1000*60*60*24);
+          if(daysSinceSub >= SUBSCRIPTION_DAYS){
+            // انتهت سنة الاشتراك، نرجعه لحالة غير مشترك ونطلب تجديد
+            localStorage.removeItem('shabaka_subscribed');
+            localStorage.removeItem('shabaka_subscribed_date');
+            trialPaywall.style.display = 'flex';
+            document.querySelector('#trialPaywall .ob-sub').textContent = 'مرت سنة كاملة على اشتراكك، حان وقت تجديد الاشتراك عشان تكمل استخدام التطبيق';
+          }
+        }
+        return; // مشترك وساري، ما نعرض شي
+      }
+
+      let trialStart = localStorage.getItem('shabaka_trial_start');
+      if(!trialStart){
+        trialStart = new Date().toISOString();
+        localStorage.setItem('shabaka_trial_start', trialStart);
+      }
+
+      const daysPassed = (new Date() - new Date(trialStart)) / (1000*60*60*24);
+      if(daysPassed >= TRIAL_DAYS){
+        trialPaywall.style.display = 'flex';
+      }
+    }catch(e){}
+  }
+
+  trialConfirmBtn.addEventListener('click', ()=>{
+    const name = document.getElementById('trialName').value.trim();
+    const phone = document.getElementById('trialPhone').value.trim();
+    const ref = document.getElementById('trialRef').value.trim();
+    if(!name || !phone || !ref){
+      window.open('https://wa.me/966780030066?text=' + encodeURIComponent('مرحبًا، أبي أكمل اشتراك تطبيق شبكتي وما قدرت أعبي النموذج'), '_blank');
+      return;
+    }
+    trialConfirmBtn.style.display = 'none';
+    trialCodeField.style.display = 'block';
+    trialActivateBtn.style.display = 'block';
+    trialMsg.style.display = 'block';
+    trialMsg.textContent = '📨 تم إرسال طلبك، بيوصلك الكود عبر واتساب قريبًا';
+  });
+
+  trialActivateBtn.addEventListener('click', ()=>{
+    const code = document.getElementById('trialCode').value.trim();
+    if(!code){
+      trialActivateBtn.textContent = 'أدخل الكود أولاً';
+      setTimeout(()=> trialActivateBtn.textContent = 'تفعيل الاشتراك', 1300);
+      return;
+    }
+    try{
+      localStorage.setItem('shabaka_subscribed', 'true');
+      localStorage.setItem('shabaka_subscribed_date', new Date().toISOString());
+    }catch(e){}
+    trialMsg.style.color = 'var(--green)';
+    trialMsg.textContent = '🎉 تم تفعيل اشتراكك بنجاح لمدة سنة كاملة! جاري الدخول للتطبيق...';
+    setTimeout(()=>{ trialPaywall.style.display = 'none'; }, 1200);
+  });
+
+  checkTrialStatus();
+
+  const catCards = document.querySelectorAll('.cat-card');
+  const resultBox = document.getElementById('resultBox');
+  const resultCode = document.getElementById('resultCode');
+  const resultDur = document.getElementById('resultDur');
+  const generateBtn = document.getElementById('generateBtn');
+  const todayEarnings = document.getElementById('todayEarnings');
+  const todayCount = document.getElementById('todayCount');
+  const historyList = document.getElementById('historyList');
+
+  let currentDur = '100';
+  let currentPrice = 100;
+  let earnings = 0;
+  let count = 0;
+  let salesByCategory = {'100':0, '200':0, '300':0, '500':0};
+
+  catCards.forEach(card=>{
+    card.addEventListener('click', ()=>{
+      catCards.forEach(c=>c.classList.remove('sel'));
+      card.classList.add('sel');
+      currentDur = card.dataset.dur;
+      currentPrice = parseInt(card.dataset.price);
+    });
+  });
+
+  // حفظ واسترجاع قيم الجيجا اللي يحددها صاحب الشبكة لكل فئة
+  const gbInputs = document.querySelectorAll('.gb-input');
+  gbInputs.forEach(input=>{
+    const key = input.dataset.key;
+    try{
+      const saved = localStorage.getItem(key);
+      if(saved){ input.value = saved; }
+    }catch(e){}
+    input.addEventListener('change', ()=>{
+      try{ localStorage.setItem(key, input.value.trim()); }catch(e){}
+    });
+    input.addEventListener('blur', ()=>{
+      try{ localStorage.setItem(key, input.value.trim()); }catch(e){}
+    });
+  });
+
+  const durIcons = {'100':'💳', '200':'💳', '300':'💳', '500':'💳'};
+  const manualCode = document.getElementById('manualCode');
+  const amountSelect = document.getElementById('amountSelect');
+  const gbField = document.getElementById('gbField');
+
+  function loadGbForCategory(){
+    try{
+      const saved = localStorage.getItem('gb_' + amountSelect.value);
+      gbField.value = saved || '';
+    }catch(e){ gbField.value = ''; }
+  }
+
+  gbField.addEventListener('change', ()=>{
+    try{ localStorage.setItem('gb_' + amountSelect.value, gbField.value.trim()); }catch(e){}
+  });
+  gbField.addEventListener('blur', ()=>{
+    try{ localStorage.setItem('gb_' + amountSelect.value, gbField.value.trim()); }catch(e){}
+  });
+
+  amountSelect.addEventListener('change', ()=>{
+    currentDur = amountSelect.value;
+    currentPrice = parseInt(amountSelect.value);
+    loadGbForCategory();
+  });
+
+  loadGbForCategory();
+
+  generateBtn.addEventListener('click', ()=>{
+    const code = manualCode.value.trim();
+    if(!code){
+      generateBtn.textContent = 'اكتب كود الكرت أولاً';
+      setTimeout(()=> generateBtn.textContent = '🎫 تسجيل الكرت المباع', 1400);
+      return;
+    }
+    resultCode.textContent = code;
+    resultDur.textContent = currentDur;
+    resultBox.classList.add('show');
+
+    earnings += currentPrice;
+    count += 1;
+    if(salesByCategory[currentDur] !== undefined){ salesByCategory[currentDur] += 1; }
+    todayEarnings.textContent = earnings;
+    todayCount.textContent = count;
+    document.getElementById('walletBalance').textContent = earnings;
+
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML = `
+      <div class="h-icon" style="background:linear-gradient(135deg,#22D3B8,#818CF8);">${durIcons[currentDur]}</div>
+      <div class="h-info"><div class="h-name">كرت ${currentDur} ريال</div><div class="h-time">الآن</div></div>
+      <div class="h-price">${currentPrice} ريال</div>
+    `;
+    historyList.insertBefore(item, historyList.firstChild);
+
+    manualCode.value = '';
+  });
+  // ===== المساعد الذكي للزبائن (مبني على كلمات مفتاحية، يشتغل بدون إنترنت) =====
+  const aiFloatBtn = document.getElementById('aiFloatBtn');
+  const aiPanel = document.getElementById('aiPanel');
+  const aiCloseBtn = document.getElementById('aiCloseBtn');
+  const aiMessages = document.getElementById('aiMessages');
+  const aiInput = document.getElementById('aiInput');
+  const aiSendBtn = document.getElementById('aiSendBtn');
+  const aiQuickBtns = document.querySelectorAll('.ai-quick button');
+
+  aiFloatBtn.addEventListener('click', ()=> aiPanel.classList.add('show'));
+  aiCloseBtn.addEventListener('click', ()=> aiPanel.classList.remove('show'));
+
+  function addAiMsg(text, who){
+    const div = document.createElement('div');
+    div.className = 'ai-msg ' + who;
+    div.textContent = text;
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+  }
+
+  function getGbInfo(){
+    const cats = ['100','200','300','500'];
+    const parts = cats.map(c=>{
+      let gb = '';
+      try{ gb = localStorage.getItem('gb_' + c) || ''; }catch(e){}
+      return gb ? `كرت ${c} ريال = ${gb}` : null;
+    }).filter(Boolean);
+    return parts.length ? parts.join('، ') : 'صاحب الشبكة ما حدد كمية الجيجا بعد، تواصل معه مباشرة.';
+  }
+
+  function aiReply(question){
+    const q = question.toLowerCase();
+
+    if(q.includes('سعر') || q.includes('كم ريال') || q.includes('فلوس') || q.includes('تكلفة')){
+      return 'الكروت المتوفرة عندنا: 100 ريال، 200 ريال، 300 ريال، 500 ريال. اختر الفئة اللي تناسبك 👍';
+    }
+    if(q.includes('جيجا') || q.includes('ميجا') || q.includes('كمية') || q.includes('gb')){
+      return 'تفاصيل الجيجا حسب الفئة: ' + getGbInfo();
+    }
+    if(q.includes('شحن') || q.includes('كيف') || q.includes('طريقة') || q.includes('استخدام')){
+      return 'اختر فئة الكرت من صاحب المتجر، وبيعطيك كود الكرت. أدخل الكود في جهاز الراوتر أو تطبيق الشبكة عندك وبيتفعل مباشرة.';
+    }
+    if(q.includes('واتساب') || q.includes('تواصل') || q.includes('دعم') || q.includes('مشكلة')){
+      return 'لو عندك مشكلة تقنية أو استفسار خاص، تقدر تتواصل مع صاحب الشبكة مباشرة عن طريق واتساب.';
+    }
+    if(q.includes('مرحبا') || q.includes('هلا') || q.includes('السلام')){
+      return 'هلا وغلا 😊 كيف أقدر أساعدك اليوم؟';
+    }
+    return 'ما فهمت سؤالك بالضبط 🙏 جرّب تسأل عن: السعر، الجيجا، أو طريقة الشحن — أو اضغط أحد الأسئلة الجاهزة تحت.';
+  }
+
+  function handleAiQuestion(text){
+    if(!text.trim()) return;
+    addAiMsg(text, 'user');
+    setTimeout(()=>{
+      addAiMsg(aiReply(text), 'bot');
+    }, 400);
+  }
+
+  aiSendBtn.addEventListener('click', ()=>{
+    handleAiQuestion(aiInput.value);
+    aiInput.value = '';
+  });
+  aiInput.addEventListener('keypress', (e)=>{
+    if(e.key === 'Enter'){
+      handleAiQuestion(aiInput.value);
+      aiInput.value = '';
+    }
+  });
+  aiQuickBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=> handleAiQuestion(btn.dataset.q));
+  });
+  // ===== محتوى أزرار الإدارة السريعة =====
+  const mgmtPanel = document.getElementById('mgmtPanel');
+  const mgmtIcon = document.getElementById('mgmtIcon');
+  const mgmtTitle = document.getElementById('mgmtTitle');
+  const mgmtBody = document.getElementById('mgmtBody');
+  const mgmtCloseBtn = document.getElementById('mgmtCloseBtn');
+
+  mgmtCloseBtn.addEventListener('click', ()=> mgmtPanel.classList.remove('show'));
+
+  function mgmtRow(label, value, color){
+    return `<div class="ai-msg bot" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+      <span>${label}</span><b style="font-family:'Roboto Mono'; color:${color || 'var(--teal)'};">${value}</b>
+    </div>`;
+  }
+
+  const mgmtData = {
+    mgmt_cards: {
+      icon: '🗂️', title: 'إدارة الكروت',
+      html: () => {
+        let rows = '';
+        ['100','200','300','500'].forEach(c=>{
+          let gb = '';
+          try{ gb = localStorage.getItem('gb_' + c) || 'غير محدد'; }catch(e){ gb = 'غير محدد'; }
+          let stockCount = 0;
+          try{ stockCount = JSON.parse(localStorage.getItem('stock_' + c) || '[]').length; }catch(e){}
+          rows += mgmtRow('كرت ' + c + ' ريال (' + gb + ')', stockCount + ' بالمخزون', stockCount <= 2 ? 'var(--red)' : 'var(--green)');
+        });
+        const lowStock = ['100','200','300','500'].filter(c=>{
+          try{ return JSON.parse(localStorage.getItem('stock_' + c) || '[]').length <= 2; }catch(e){ return true; }
+        });
+        let warning = '';
+        if(lowStock.length > 0){
+          warning = `<div class="ai-msg bot" style="width:100%; background:#F8717122; color:var(--red); text-align:center; font-weight:700;">⚠️ مخزون منخفض في فئة: ${lowStock.join('، ')} ريال — أضف كروت جديدة قريبًا</div>`;
+        }
+        rows += warning;
+        rows += `<div class="ai-msg bot" style="width:100%; text-align:center; color:var(--muted); font-size:11px;">إجمالي عدد الكروت المباعة: ${count}</div>`;
+        return rows;
+      }
+    },
+    mgmt_add: {
+      icon: '➕', title: 'إضافة كروت',
+      html: () => {
+        let stock = '';
+        ['100','200','300','500'].forEach(c=>{
+          let n = 0;
+          try{
+            const list = JSON.parse(localStorage.getItem('stock_' + c) || '[]');
+            n = list.length;
+          }catch(e){}
+          stock += mgmtRow('مخزون فئة ' + c + ' ريال', n + ' كرت');
+        });
+        return `
+          ${stock}
+          <div class="ai-msg bot" style="width:100%; padding:14px;">
+            <label style="display:block; font-size:11.5px; color:var(--muted); margin-bottom:8px;">اختر الفئة</label>
+            <select id="addStockCategory" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:10px; padding:10px; color:var(--text); font-size:13px; font-family:'IBM Plex Sans Arabic'; margin-bottom:12px;">
+              <option value="100">100 ريال</option>
+              <option value="200">200 ريال</option>
+              <option value="300">300 ريال</option>
+              <option value="500">500 ريال</option>
+            </select>
+            <label style="display:block; font-size:11.5px; color:var(--muted); margin-bottom:8px;">أكواد الكروت (كود في كل سطر)</label>
+            <textarea id="addStockCodes" rows="4" placeholder="WIFI-1111-1111
+WIFI-2222-2222
+WIFI-3333-3333" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:10px; padding:10px; color:var(--text); font-size:12px; font-family:'Roboto Mono'; margin-bottom:12px; resize:vertical;"></textarea>
+            <button id="addStockBtn" style="width:100%; background:linear-gradient(135deg,var(--teal),var(--violet)); border:none; border-radius:10px; padding:12px; color:#04121a; font-family:'Almarai'; font-weight:800; font-size:13px; cursor:pointer;">➕ إضافة للمخزون</button>
+            <div id="addStockMsg" style="text-align:center; font-size:11px; margin-top:8px; color:var(--green); display:none;"></div>
+          </div>
+        `;
+      }
+    },
+    mgmt_payments: {
+      icon: '📈', title: 'تقارير الدفعات',
+      html: () => {
+        const cats = ['100','200','300','500'];
+        const catColors = {'100':'#22D3B8','200':'#818CF8','300':'#F472B6','500':'#FBBF63'};
+        const maxSales = Math.max(...cats.map(c=> salesByCategory[c] || 0), 1);
+        let chartHtml = '<div class="ai-msg bot" style="width:100%; padding:16px;"><div style="font-size:11.5px; color:var(--muted); margin-bottom:12px;">توزيع المبيعات حسب الفئة</div><div style="display:flex; align-items:flex-end; gap:10px; height:90px;">';
+        cats.forEach(c=>{
+          const val = salesByCategory[c] || 0;
+          const h = Math.max(6, Math.round((val / maxSales) * 80));
+          chartHtml += `<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <div style="font-size:10px; color:${catColors[c]}; font-family:'Roboto Mono';">${val}</div>
+            <div style="width:100%; height:${h}px; background:${catColors[c]}; border-radius:6px 6px 0 0;"></div>
+            <div style="font-size:9.5px; color:var(--muted);">${c}</div>
+          </div>`;
+        });
+        chartHtml += '</div></div>';
+
+        let netName = 'شبكتي';
+        try{ netName = localStorage.getItem('shabaka_name') || 'شبكتي'; }catch(e){}
+        const reportText = `📊 تقرير مبيعات ${netName}\n\nإجمالي الأرباح: ${earnings} ريال\nعدد العمليات: ${count}\nمتوسط العملية: ${count > 0 ? Math.round(earnings/count) : 0} ريال\n\nتوزيع المبيعات:\n- 100 ريال: ${salesByCategory['100']} عملية\n- 200 ريال: ${salesByCategory['200']} عملية\n- 300 ريال: ${salesByCategory['300']} عملية\n- 500 ريال: ${salesByCategory['500']} عملية`;
+        const shareUrl = 'https://wa.me/?text=' + encodeURIComponent(reportText);
+
+        return `
+          ${mgmtRow('إجمالي أرباح اليوم', earnings + ' ريال', 'var(--amber)')}
+          ${mgmtRow('عدد العمليات اليوم', count)}
+          ${mgmtRow('متوسط قيمة العملية', count > 0 ? Math.round(earnings/count) + ' ريال' : '0 ريال')}
+          ${chartHtml}
+          <a href="${shareUrl}" target="_blank" style="text-decoration:none; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg,#25D366,#1DA851); color:#fff; padding:12px; border-radius:100px; font-family:'Almarai'; font-weight:700; font-size:12.5px;">
+            📤 مشاركة التقرير عبر واتساب
+          </a>
+        `;
+      }
+    },
+    mgmt_packages: {
+      icon: '📶', title: 'إدارة الباقات',
+      html: () => `
+        ${mgmtRow('باقة 100 ريال', 'نشطة', 'var(--green)')}
+        ${mgmtRow('باقة 200 ريال', 'نشطة', 'var(--green)')}
+        ${mgmtRow('باقة 300 ريال', 'نشطة', 'var(--green)')}
+        ${mgmtRow('باقة 500 ريال', 'نشطة', 'var(--green)')}
+      `
+    },
+    mgmt_maintenance: {
+      icon: '🛠️', title: 'صيانة الكروت المنتهية',
+      html: () => `<div class="ai-msg bot" style="width:100%;">ما فيه كروت منتهية الصلاحية مسجلة حاليًا 👍 لو حاب تحذف كرت قديم من السجل، امسحه يدويًا من قسم "آخر الكروت المباعة".</div>`
+    },
+    mgmt_devices: {
+      icon: '📡', title: 'تقارير الأجهزة',
+      html: () => {
+        let ip = '';
+        try{ ip = localStorage.getItem('shabaka_ip') || 'لم يُعبّى'; }catch(e){ ip = 'لم يُعبّى'; }
+        return `
+          ${mgmtRow('عنوان IP المسجل', ip)}
+          ${mgmtRow('حالة الاتصال', 'غير متصل فعليًا', 'var(--pink)')}
+          <div class="ai-msg bot" style="width:100%; font-size:11px; color:var(--muted);">لربط جهاز حقيقي، افتح "دعم أنظمة الراوتر" بالأسفل.</div>
+        `;
+      }
+    },
+    mgmt_backup: {
+      icon: '💾', title: 'النسخ الاحتياطية',
+      html: () => `<div class="ai-msg bot" style="width:100%;">ما فيه نسخة احتياطية محفوظة بعد. البيانات الحالية (الأرباح، الكروت، إعدادات الشبكة) محفوظة على هذا الجهاز فقط، وتُفقد لو مسحت بيانات المتصفح.</div>`
+    },
+    mgmt_design: {
+      icon: '🎨', title: 'تصميم الكروت',
+      html: () => {
+        let netName = 'شبكتي';
+        try{ netName = localStorage.getItem('shabaka_name') || 'شبكتي'; }catch(e){}
+        return `
+          <div class="ai-msg bot" style="width:100%; padding:14px;">
+            <label style="display:block; font-size:11.5px; color:var(--muted); margin-bottom:8px;">القالب</label>
+            <div style="display:flex; gap:8px; margin-bottom:16px;" id="designTemplates">
+              <div class="design-tpl sel" data-tpl="modern" style="flex:1; text-align:center; padding:10px 4px; border-radius:10px; border:2px solid var(--teal); cursor:pointer; font-size:10.5px;">🪪<br>عصري</div>
+              <div class="design-tpl" data-tpl="minimal" style="flex:1; text-align:center; padding:10px 4px; border-radius:10px; border:2px solid transparent; background:#0D1321; cursor:pointer; font-size:10.5px;">▫️<br>بسيط</div>
+              <div class="design-tpl" data-tpl="bold" style="flex:1; text-align:center; padding:10px 4px; border-radius:10px; border:2px solid transparent; background:#0D1321; cursor:pointer; font-size:10.5px;">🔲<br>جريء</div>
+            </div>
+
+            <label style="display:block; font-size:11.5px; color:var(--muted); margin-bottom:8px;">لون التصميم</label>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;" id="designColors">
+              <div class="design-color sel" data-c1="#22D3B8" data-c2="#818CF8" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#22D3B8,#818CF8); cursor:pointer; border:2px solid #fff;"></div>
+              <div class="design-color" data-c1="#F472B6" data-c2="#FBBF63" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#F472B6,#FBBF63); cursor:pointer; border:2px solid transparent;"></div>
+              <div class="design-color" data-c1="#818CF8" data-c2="#F472B6" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#818CF8,#F472B6); cursor:pointer; border:2px solid transparent;"></div>
+              <div class="design-color" data-c1="#FBBF63" data-c2="#22D3B8" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#FBBF63,#22D3B8); cursor:pointer; border:2px solid transparent;"></div>
+              <div class="design-color" data-c1="#4ADE80" data-c2="#22D3B8" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#4ADE80,#22D3B8); cursor:pointer; border:2px solid transparent;"></div>
+              <div class="design-color" data-c1="#F87171" data-c2="#F472B6" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#F87171,#F472B6); cursor:pointer; border:2px solid transparent;"></div>
+              <div class="design-color" data-c1="#FBBF63" data-c2="#F87171" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#FBBF63,#F87171); cursor:pointer; border:2px solid transparent;"></div>
+              <div class="design-color" data-c1="#64748B" data-c2="#334155" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#64748B,#334155); cursor:pointer; border:2px solid transparent;"></div>
+              <div class="design-color" data-c1="#FFFFFF" data-c2="#F87171" data-dark="1" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#FFFFFF,#F87171); cursor:pointer; border:2px solid transparent;"></div>
+              <div class="design-color" data-c1="#FFFFFF" data-c2="#3B82F6" data-dark="1" style="width:42px; height:34px; border-radius:8px; background:linear-gradient(135deg,#FFFFFF,#3B82F6); cursor:pointer; border:2px solid transparent;"></div>
+            </div>
+
+            <label style="display:block; font-size:11.5px; color:var(--muted); margin-bottom:8px;">فئة المعاينة</label>
+            <select id="designCategory" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:10px; padding:10px; color:var(--text); font-size:13px; font-family:'IBM Plex Sans Arabic'; margin-bottom:16px;">
+              <option value="100">100 ريال</option>
+              <option value="200">200 ريال</option>
+              <option value="300">300 ريال</option>
+              <option value="500">500 ريال</option>
+            </select>
+
+            <label style="display:block; font-size:11.5px; color:var(--muted); margin-bottom:8px;">حجم الكرت</label>
+            <select id="designSize" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:10px; padding:10px; color:var(--text); font-size:13px; font-family:'IBM Plex Sans Arabic'; margin-bottom:16px;">
+              <option value="85x55">بطاقة عمل قياسية — 85 × 55 مم</option>
+              <option value="90x50">كرت شحن شائع — 90 × 50 مم</option>
+              <option value="70x40">كرت صغير — 70 × 40 مم</option>
+              <option value="custom">مقاس مخصص</option>
+            </select>
+            <div id="customSizeRow" style="display:none; gap:10px; margin-bottom:6px;">
+              <input type="number" id="customWidth" placeholder="العرض (مم)" style="flex:1; background:#0D1321; border:1px solid #ffffff1a; border-radius:10px; padding:10px; color:var(--text); font-size:12.5px; font-family:'IBM Plex Sans Arabic';">
+              <input type="number" id="customHeight" placeholder="الطول (مم)" style="flex:1; background:#0D1321; border:1px solid #ffffff1a; border-radius:10px; padding:10px; color:var(--text); font-size:12.5px; font-family:'IBM Plex Sans Arabic';">
+            </div>
+          </div>
+
+          <div id="cardPreview" class="tpl-modern" style="width:100%; max-width:340px; aspect-ratio:85/55; border-radius:16px; padding:20px; background:linear-gradient(135deg,#22D3B8,#818CF8); color:#04121a; margin-bottom:10px; margin-inline:auto; box-sizing:border-box;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px;">
+              <div style="font-family:'Almarai'; font-weight:800; font-size:15px;" id="previewNetName">${netName}</div>
+              <div id="previewIcon" style="font-size:18px;">📡</div>
+            </div>
+            <div style="font-size:10.5px; opacity:0.75; margin-bottom:4px;">كرت شحن إنترنت</div>
+            <div style="font-family:'Roboto Mono'; font-size:26px; font-weight:700; margin-bottom:14px;" id="previewPrice">100 ريال</div>
+            <div style="background:#04121a22; border-radius:8px; padding:10px; text-align:center; font-family:'Roboto Mono'; font-size:12px; letter-spacing:1.5px;">WIFI-XXXX-XXXX</div>
+          </div>
+          <button id="printCardBtn" style="width:100%; background:linear-gradient(135deg,var(--teal),var(--violet)); border:none; border-radius:10px; padding:12px; color:#04121a; font-family:'Almarai'; font-weight:800; font-size:13px; cursor:pointer; margin-bottom:10px;">🖨️ طباعة الكرت</button>
+          <div class="ai-msg bot" style="width:100%; font-size:10.5px; color:var(--muted); text-align:center;">زر الطباعة يفتح نافذة طباعة المتصفح الحقيقية — تقدر تطبعه على طابعة عادية أو تحفظه PDF</div>
+        `;
+      }
+    },
+    mgmt_shops: {
+      icon: '🏪', title: 'حسابات البقالات',
+      html: () => {
+        let shops = [];
+        try{ shops = JSON.parse(localStorage.getItem('shabaka_shops') || '[]'); }catch(e){}
+
+        let searchBoxHtml = `
+          <div class="ai-msg bot" style="width:100%; padding:14px;">
+            <label style="display:block; font-size:11.5px; color:var(--muted); margin-bottom:8px;">🔍 ابحث عن بقالة بالاسم</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="shopSearchInput" placeholder="مثال: بقالة النور" style="flex:1; background:#0D1321; border:1px solid #ffffff1a; border-radius:10px; padding:10px; color:var(--text); font-size:13px; font-family:'IBM Plex Sans Arabic';">
+              <button id="shopSearchBtn" style="background:linear-gradient(135deg,var(--teal),var(--violet)); border:none; border-radius:10px; padding:0 16px; color:#04121a; font-family:'Almarai'; font-weight:800; font-size:12.5px; cursor:pointer;">بحث</button>
+            </div>
+            <div id="shopSearchResult" style="margin-top:12px;"></div>
+          </div>
+        `;
+
+        let listHtml = '';
+        if(shops.length === 0){
+          listHtml = `<div class="ai-msg bot" style="width:100%; text-align:center; color:var(--muted);">ما فيه بقالات مسجلة بعد، ضيف أول بقالة تحت 👇</div>`;
+        } else {
+          const withTotals = shops.map(s => ({ ...s, total:(s.c100||0)+(s.c200||0)+(s.c300||0)+(s.c500||0) }));
+          const top = withTotals.reduce((a,b)=> b.total > a.total ? b : a, withTotals[0]);
+
+          const sum100 = shops.reduce((a,s)=> a + (s.c100||0), 0);
+          const sum200 = shops.reduce((a,s)=> a + (s.c200||0), 0);
+          const sum300 = shops.reduce((a,s)=> a + (s.c300||0), 0);
+          const sum500 = shops.reduce((a,s)=> a + (s.c500||0), 0);
+          const grandCards = sum100 + sum200 + sum300 + sum500;
+          const grandValue = (sum100*100) + (sum200*200) + (sum300*300) + (sum500*500);
+
+          listHtml += `
+            <div class="ai-msg bot" style="width:100%; background:linear-gradient(135deg,#22D3B822,#818CF822); padding:16px;">
+              <div style="font-family:'Almarai'; font-weight:800; font-size:13px; margin-bottom:12px; text-align:center;">📊 إجمالي كل البقالات (${shops.length})</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11px; margin-bottom:10px;">
+                <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">100 ريال: <b style="color:var(--teal);">${sum100}</b></div>
+                <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">200 ريال: <b style="color:var(--violet);">${sum200}</b></div>
+                <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">300 ريال: <b style="color:var(--pink);">${sum300}</b></div>
+                <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">500 ريال: <b style="color:var(--amber);">${sum500}</b></div>
+              </div>
+              <div style="text-align:center; border-top:1px solid #ffffff14; padding-top:10px;">
+                <div style="font-size:10.5px; color:var(--muted);">إجمالي عدد الكروت الموزعة</div>
+                <div style="font-family:'Roboto Mono'; font-size:20px; font-weight:700; margin-bottom:6px;">${grandCards} كرت</div>
+                <div style="font-size:10.5px; color:var(--muted);">إجمالي القيمة المالية</div>
+                <div style="font-family:'Roboto Mono'; font-size:20px; font-weight:700; color:var(--amber);">${grandValue} ريال</div>
+              </div>
+            </div>
+          `;
+
+          listHtml += `
+            <div class="ai-msg bot" style="width:100%; background:linear-gradient(135deg,#FBBF6322,#F4728622); text-align:center; padding:14px;">
+              🏆 <b style="font-family:'Almarai'; color:var(--amber);">${top.name}</b> أكبر بقالة حاليًا بـ ${top.total} كرت
+            </div>
+          `;
+          shops.forEach((shop, idx)=>{
+            const total = (shop.c100||0)+(shop.c200||0)+(shop.c300||0)+(shop.c500||0);
+            listHtml += `
+              <div class="ai-msg bot" style="width:100%; padding:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <div style="font-family:'Almarai'; font-weight:800; font-size:13.5px;">🏪 ${shop.name}</div>
+                  <div style="font-size:10px; color:var(--muted); cursor:pointer;" onclick="window.deleteShop(${idx})">🗑️ حذف</div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11px;">
+                  <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">100 ريال: <b style="color:var(--teal);">${shop.c100||0}</b></div>
+                  <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">200 ريال: <b style="color:var(--violet);">${shop.c200||0}</b></div>
+                  <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">300 ريال: <b style="color:var(--pink);">${shop.c300||0}</b></div>
+                  <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">500 ريال: <b style="color:var(--amber);">${shop.c500||0}</b></div>
+                </div>
+                <div style="text-align:center; margin-top:8px; font-size:10.5px; color:var(--muted);">إجمالي الكروت: ${total}</div>
+              </div>
+            `;
+          });
+        }
+
+        return `
+          ${searchBoxHtml}
+          ${listHtml}
+          <div class="ai-msg bot" style="width:100%; padding:14px;">
+            <div style="font-family:'Almarai'; font-weight:700; font-size:13px; margin-bottom:12px;">➕ إضافة بقالة جديدة</div>
+            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px;">اسم البقالة</label>
+            <input type="text" id="shopName" placeholder="مثال: بقالة النور" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:10px; padding:10px; color:var(--text); font-size:13px; font-family:'IBM Plex Sans Arabic'; margin-bottom:12px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
+              <div>
+                <label style="display:block; font-size:10px; color:var(--muted); margin-bottom:5px;">عدد كروت 100</label>
+                <input type="number" id="shopC100" placeholder="0" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:8px; padding:8px; color:var(--text); font-size:12px; font-family:'Roboto Mono';">
+              </div>
+              <div>
+                <label style="display:block; font-size:10px; color:var(--muted); margin-bottom:5px;">عدد كروت 200</label>
+                <input type="number" id="shopC200" placeholder="0" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:8px; padding:8px; color:var(--text); font-size:12px; font-family:'Roboto Mono';">
+              </div>
+              <div>
+                <label style="display:block; font-size:10px; color:var(--muted); margin-bottom:5px;">عدد كروت 300</label>
+                <input type="number" id="shopC300" placeholder="0" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:8px; padding:8px; color:var(--text); font-size:12px; font-family:'Roboto Mono';">
+              </div>
+              <div>
+                <label style="display:block; font-size:10px; color:var(--muted); margin-bottom:5px;">عدد كروت 500</label>
+                <input type="number" id="shopC500" placeholder="0" style="width:100%; background:#0D1321; border:1px solid #ffffff1a; border-radius:8px; padding:8px; color:var(--text); font-size:12px; font-family:'Roboto Mono';">
+              </div>
+            </div>
+            <button id="addShopBtn" style="width:100%; background:linear-gradient(135deg,var(--teal),var(--violet)); border:none; border-radius:10px; padding:12px; color:#04121a; font-family:'Almarai'; font-weight:800; font-size:13px; cursor:pointer;">➕ حفظ البقالة</button>
+            <div id="addShopMsg" style="text-align:center; font-size:11px; margin-top:8px; color:var(--green); display:none;"></div>
+          </div>
+        `;
+      }
+    }
+  };
+
+  function setupShopsForm(){
+    const searchBtn = document.getElementById('shopSearchBtn');
+    const searchInput = document.getElementById('shopSearchInput');
+    const searchResult = document.getElementById('shopSearchResult');
+
+    if(searchInput){
+      searchInput.addEventListener('keypress', (e)=>{
+        if(e.key === 'Enter'){ searchBtn.click(); }
+      });
+    }
+
+    if(searchBtn){
+      searchBtn.addEventListener('click', ()=>{
+        const query = searchInput.value.trim().toLowerCase();
+        if(!query){
+          searchResult.innerHTML = `<div style="color:var(--red); font-size:11px; text-align:center;">اكتب اسم البقالة أولاً</div>`;
+          return;
+        }
+        let shops = [];
+        try{ shops = JSON.parse(localStorage.getItem('shabaka_shops') || '[]'); }catch(e){}
+        const found = shops.filter(s => s.name.toLowerCase().includes(query));
+
+        if(found.length === 0){
+          searchResult.innerHTML = `<div style="color:var(--muted); font-size:11px; text-align:center;">ما لقينا بقالة بهذا الاسم</div>`;
+          return;
+        }
+
+        searchResult.innerHTML = found.map(shop=>{
+          const total = (shop.c100||0)+(shop.c200||0)+(shop.c300||0)+(shop.c500||0);
+          const value = (shop.c100||0)*100 + (shop.c200||0)*200 + (shop.c300||0)*300 + (shop.c500||0)*500;
+          return `
+            <div style="background:linear-gradient(135deg,#22D3B822,#818CF822); border-radius:12px; padding:14px;">
+              <div style="font-family:'Almarai'; font-weight:800; font-size:13.5px; margin-bottom:10px;">🏪 ${shop.name}</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11px; margin-bottom:10px;">
+                <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">100 ريال: <b style="color:var(--teal);">${shop.c100||0}</b></div>
+                <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">200 ريال: <b style="color:var(--violet);">${shop.c200||0}</b></div>
+                <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">300 ريال: <b style="color:var(--pink);">${shop.c300||0}</b></div>
+                <div style="background:#0D1321; border-radius:8px; padding:8px; text-align:center;">500 ريال: <b style="color:var(--amber);">${shop.c500||0}</b></div>
+              </div>
+              <div style="text-align:center; border-top:1px solid #ffffff14; padding-top:8px;">
+                <div style="font-size:10px; color:var(--muted);">إجمالي الكروت: <b style="color:var(--text);">${total}</b> — القيمة: <b style="color:var(--amber);">${value} ريال</b></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      });
+    }
+
+    const btn = document.getElementById('addShopBtn');
+    if(!btn) return;
+    btn.addEventListener('click', ()=>{
+      const name = document.getElementById('shopName').value.trim();
+      const c100 = parseInt(document.getElementById('shopC100').value) || 0;
+      const c200 = parseInt(document.getElementById('shopC200').value) || 0;
+      const c300 = parseInt(document.getElementById('shopC300').value) || 0;
+      const c500 = parseInt(document.getElementById('shopC500').value) || 0;
+      const msg = document.getElementById('addShopMsg');
+
+      if(!name){
+        msg.style.color = 'var(--red)';
+        msg.textContent = 'اكتب اسم البقالة أولاً';
+        msg.style.display = 'block';
+        return;
+      }
+
+      try{
+        const shops = JSON.parse(localStorage.getItem('shabaka_shops') || '[]');
+        shops.push({ name, c100, c200, c300, c500 });
+        localStorage.setItem('shabaka_shops', JSON.stringify(shops));
+      }catch(e){}
+
+      msg.style.color = 'var(--green)';
+      msg.textContent = '✅ تم حفظ بقالة "' + name + '"';
+      msg.style.display = 'block';
+
+      setTimeout(()=>{
+        mgmtBody.innerHTML = mgmtData.mgmt_shops.html();
+        setupShopsForm();
+      }, 800);
+    });
+  }
+
+  window.deleteShop = function(idx){
+    try{
+      const shops = JSON.parse(localStorage.getItem('shabaka_shops') || '[]');
+      shops.splice(idx, 1);
+      localStorage.setItem('shabaka_shops', JSON.stringify(shops));
+    }catch(e){}
+    mgmtBody.innerHTML = mgmtData.mgmt_shops.html();
+    setupShopsForm();
+  };
+
+
+  function setupDesignForm(){
+    const colors = document.querySelectorAll('.design-color');
+    const templates = document.querySelectorAll('.design-tpl');
+    const preview = document.getElementById('cardPreview');
+    const catSelect = document.getElementById('designCategory');
+    const previewPrice = document.getElementById('previewPrice');
+    const previewIcon = document.getElementById('previewIcon');
+    if(!preview) return;
+
+    let curC1 = '#22D3B8', curC2 = '#818CF8';
+
+    function applyTemplate(tpl){
+      if(tpl === 'modern'){
+        preview.style.borderRadius = '16px';
+        preview.style.padding = '20px';
+        preview.style.background = `linear-gradient(135deg, ${curC1}, ${curC2})`;
+        previewIcon.style.display = 'block';
+      } else if(tpl === 'minimal'){
+        preview.style.borderRadius = '10px';
+        preview.style.padding = '18px';
+        preview.style.background = '#16203A';
+        preview.style.border = `1.5px solid ${curC1}`;
+        preview.style.color = '#EEF2FF';
+        previewIcon.style.display = 'none';
+      } else if(tpl === 'bold'){
+        preview.style.borderRadius = '4px';
+        preview.style.padding = '22px';
+        preview.style.background = curC1;
+        previewIcon.style.display = 'block';
+      }
+    }
+
+    colors.forEach(c=>{
+      c.addEventListener('click', ()=>{
+        colors.forEach(x=> x.style.border = '2px solid transparent');
+        c.style.border = '2px solid #fff';
+        curC1 = c.dataset.c1;
+        curC2 = c.dataset.c2;
+        const activeTpl = document.querySelector('.design-tpl.sel');
+        applyTemplate(activeTpl ? activeTpl.dataset.tpl : 'modern');
+      });
+    });
+
+    templates.forEach(t=>{
+      t.addEventListener('click', ()=>{
+        templates.forEach(x=>{ x.style.border = '2px solid transparent'; x.classList.remove('sel'); });
+        t.style.border = '2px solid var(--teal)';
+        t.classList.add('sel');
+        applyTemplate(t.dataset.tpl);
+      });
+    });
+
+    catSelect.addEventListener('change', ()=>{
+      previewPrice.textContent = catSelect.value + ' ريال';
+    });
+
+    const sizeSelect = document.getElementById('designSize');
+    const customSizeRow = document.getElementById('customSizeRow');
+    const customWidth = document.getElementById('customWidth');
+    const customHeight = document.getElementById('customHeight');
+
+    function applySize(wMm, hMm){
+      preview.style.aspectRatio = wMm + '/' + hMm;
+      preview.dataset.wmm = wMm;
+      preview.dataset.hmm = hMm;
+    }
+
+    sizeSelect.addEventListener('change', ()=>{
+      const val = sizeSelect.value;
+      if(val === 'custom'){
+        customSizeRow.style.display = 'flex';
+        applySize(customWidth.value || 85, customHeight.value || 55);
+      } else {
+        customSizeRow.style.display = 'none';
+        const [w, h] = val.split('x');
+        applySize(w, h);
+      }
+    });
+
+    [customWidth, customHeight].forEach(inp=>{
+      inp.addEventListener('input', ()=>{
+        if(sizeSelect.value === 'custom'){
+          applySize(customWidth.value || 85, customHeight.value || 55);
+        }
+      });
+    });
+
+    const printBtn = document.getElementById('printCardBtn');
+    if(printBtn){
+      printBtn.addEventListener('click', ()=>{
+        const wMm = preview.dataset.wmm || 85;
+        const hMm = preview.dataset.hmm || 55;
+        let styleTag = document.getElementById('dynamicPrintSize');
+        if(!styleTag){
+          styleTag = document.createElement('style');
+          styleTag.id = 'dynamicPrintSize';
+          document.head.appendChild(styleTag);
+        }
+        styleTag.textContent = `@media print{ #cardPreview{ width:${wMm}mm !important; height:${hMm}mm !important; aspect-ratio:unset !important; } }`;
+        window.print();
+      });
+    }
+  }
+
+  function setupAddStockForm(){
+    const btn = document.getElementById('addStockBtn');
+    if(!btn) return;
+    btn.addEventListener('click', ()=>{
+      const cat = document.getElementById('addStockCategory').value;
+      const codesRaw = document.getElementById('addStockCodes').value;
+      const codes = codesRaw.split('\n').map(c=>c.trim()).filter(Boolean);
+      const msg = document.getElementById('addStockMsg');
+      if(codes.length === 0){
+        msg.style.color = 'var(--red)';
+        msg.textContent = 'اكتب كود واحد على الأقل';
+        msg.style.display = 'block';
+        return;
+      }
+      try{
+        const key = 'stock_' + cat;
+        const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        const updated = existing.concat(codes);
+        localStorage.setItem(key, JSON.stringify(updated));
+      }catch(e){}
+      msg.style.color = 'var(--green)';
+      msg.textContent = '✅ تم إضافة ' + codes.length + ' كود لمخزون فئة ' + cat + ' ريال';
+      msg.style.display = 'block';
+      document.getElementById('addStockCodes').value = '';
+      // إعادة تحميل الشاشة لتحديث أرقام المخزون
+      setTimeout(()=>{
+        mgmtBody.innerHTML = mgmtData.mgmt_add.html();
+        setupAddStockForm();
+      }, 900);
+    });
+  }
+
+  Object.keys(mgmtData).forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('click', ()=>{
+      const data = mgmtData[id];
+      mgmtIcon.textContent = data.icon;
+      mgmtTitle.textContent = data.title;
+      mgmtBody.innerHTML = data.html();
+      mgmtPanel.classList.add('show');
+      if(id === 'mgmt_add'){ setupAddStockForm(); }
+      if(id === 'mgmt_design'){ setupDesignForm(); }
+      if(id === 'mgmt_shops'){ setupShopsForm(); }
+    });
+  });
+</script>
+
+</body>
+</html>
